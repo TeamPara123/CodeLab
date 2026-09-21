@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeLab</title>
+    <style>
+        /* ========================================
+   CODELAB CSS
+======================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1020;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* ========================================
+   HEADER
+======================================== */
+
+        header {
+            background: linear-gradient(135deg, #151d38, #202d55);
+            padding: 35px 20px;
+            text-align: center;
+            border-bottom: 1px solid #303b60;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #aab4d0;
+            font-size: 17px;
+        }
+
+        /* ========================================
+   NAVIGATIE
+======================================== */
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: #10172b;
+            border-bottom: 1px solid #252e4c;
+            flex-wrap: wrap;
+        }
+
+        .nav-button {
+            background: #1b2540;
+            color: white;
+            border: 1px solid #303b60;
+            padding: 11px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav-button:hover {
+            background: #29365a;
+            transform: translateY(-2px);
+        }
+
+        .nav-button.active {
+            background: #4969e8;
+            border-color: #6681ff;
+        }
+
+        /* ========================================
+   MAIN
+======================================== */
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page h2 {
+            margin-bottom: 20px;
+        }
+
+        /* ========================================
+   LESSEN
+======================================== */
+
+        .level {
+            margin-bottom: 35px;
+        }
+
+        .level-title {
+            color: #8fa7ff;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .lessons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .lesson {
+            background: #151d34;
+            border: 1px solid #293554;
+            border-radius: 15px;
+            padding: 20px;
+            transition: 0.2s;
+        }
+
+        .lesson:hover {
+            transform: translateY(-4px);
+            border-color: #506be0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .lesson-number {
+            color: #728cff;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .lesson h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .lesson p {
+            color: #9da8c3;
+            line-height: 1.5;
+        }
+
+        .lesson.locked {
+            opacity: 0.55;
+        }
+
+        .lesson-button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 11px;
+            border: none;
+            border-radius: 9px;
+            background: #4969e8;
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .lesson-button:hover {
+            background: #5b78f2;
+            transform: translateY(-2px);
+        }
+
+        /* ========================================
+   LES PAGINA
+======================================== */
+
+        #lessonPage {
+            background: #11182d;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #293554;
+        }
+
+        #lessonContent h1 {
+            margin-bottom: 20px;
+        }
+
+        #lessonContent h2 {
+            margin-top: 25px;
+            color: #91a5ff;
+        }
+
+        #lessonContent p,
+        #lessonContent li {
+            color: #b2bad0;
+            line-height: 1.7;
+        }
+
+        #lessonContent ul {
+            margin: 15px 0 15px 25px;
+        }
+
+        /* ========================================
+   CODE
+======================================== */
+
+        pre {
+            background: #080d19;
+            border: 1px solid #283250;
+            padding: 18px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        code {
+            color: #dbe2ff;
+            font-family: Consolas, monospace;
+        }
+
+        /* ========================================
+   TEXTAREA
+======================================== */
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            margin-top: 15px;
+            padding: 15px;
+            background: #080d19;
+            color: #ffffff;
+            border: 1px solid #303b60;
+            border-radius: 10px;
+            resize: vertical;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #5975ed;
+            box-shadow: 0 0 0 2px rgba(89, 117, 237, 0.15);
+        }
+
+        /* ========================================
+   KNOPPEN
+======================================== */
+
+        button {
+            font-family: inherit;
+        }
+
+        .check-button,
+        .primary {
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #4969e8;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .check-button:hover,
+        .primary:hover {
+            background: #5b78f2;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        /* ========================================
+   QUIZ
+======================================== */
+
+        .exercise {
+            margin-top: 25px;
+            background: #151d34;
+            border: 1px solid #293554;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .quiz-answer {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background: #202945;
+            color: white;
+            border: 1px solid #303a5b;
+            border-radius: 8px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .quiz-answer:hover {
+            background: #2c395d !important;
+            border-color: #5975ed !important;
+        }
+
+        /* ========================================
+   VOORTGANG
+======================================== */
+
+        #progressText {
+            color: #aab4d0;
+            margin-bottom: 12px;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 14px;
+            background: #4969e8;
+            border-radius: 20px;
+            transition: width 0.5s;
+        }
+
+        #progress {
+            background: #11182d;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #293554;
+        }
+
+        #badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .badge {
+            background: #151d34;
+            border: 1px solid #293554;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .badge.locked {
+            opacity: 0.45;
+        }
+
+        .badge-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+        }
+
+        /* ========================================
+   EDITOR
+======================================== */
+
+        .editor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .editor-box {
+            background: #11182d;
+            border: 1px solid #293554;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .editor-title {
+            background: #1b2540;
+            padding: 12px 15px;
+            font-weight: bold;
+            color: #aab8ff;
+        }
+
+        .editor-box textarea {
+            margin: 0;
+            border: none;
+            border-radius: 0;
+            min-height: 400px;
+        }
+
+        .preview {
+            width: 100%;
+            height: 430px;
+            background: white;
+            border: none;
+        }
+
+        /* ========================================
+   LOCKED BOX
+======================================== */
+
+        .locked-box {
+            background: #171d31;
+            border: 1px solid #4b5270;
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .locked-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .locked-box p {
+            color: #9da8c3;
+        }
+
+        /* ========================================
+   STATISTIEKEN
+======================================== */
+
+        #xp,
+        #statLessons,
+        #statXP,
+        #statLevel,
+        #statPercent,
+        #homeProgress {
+            display: none;
+        }
+
+        /* ========================================
+   RESPONSIVE / GSM
+======================================== */
+
+        @media (max-width: 700px) {
+
+            header h1 {
+                font-size: 32px;
+            }
+
+            main {
+                padding: 20px 12px;
+            }
+
+            nav {
+                gap: 6px;
+            }
+
+            .nav-button {
+                padding: 9px 12px;
+                font-size: 14px;
+            }
+
+            #lessonPage {
+                padding: 20px 15px;
+            }
+
+            .lessons {
+                grid-template-columns: 1fr;
+            }
+
+            .editor {
+                grid-template-columns: 1fr;
+            }
+
+            .preview {
+                height: 300px;
+            }
+
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #4969e8, #7257e8);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(73, 105, 232, 0.4);
+        }
+
+        .explanation-box {
+            background: #151d34;
+            border: 1px solid #293554;
+            padding: 20px;
+            border-radius: 14px;
+            margin: 20px 0;
+        }
+
+        .explanation-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .explanation-buttons button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 9px;
+            background: #29365a;
+            color: white;
+            cursor: pointer;
+        }
+
+        .explanation-buttons button.active {
+            background: #4969e8;
+        }
+
+        .full-explanation {
+            display: none;
+            color: #b2bad0;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <header>
+        <h1>CodeLab</h1>
+        <p>Leer programmeren!</p>
+    </header>
+
+    <nav>
+        <button class="nav-button" onclick="showPage('lessons', this)">
+            📚 Lessen
+        </button>
+
+        <button class="nav-button" onclick="showPage('progress', this)">
+            📊 Voortgang
+        </button>
+
+        <button class="nav-button" onclick="showPage('quiz', this)">
+            🧠 Quiz
+        </button>
+
+        <button class="nav-button" onclick="showPage('practice', this)">
+            💻 Oefenen
+        </button>
+    </nav>
+
+    <main>
+
+        <!-- LESSEN -->
+        <section id="lessons" class="page active">
+            <h2>📚 Lessen</h2>
+            <div id="lessonList"></div>
+        </section>
+
+        <!-- LES -->
+        <section id="lessonPage" class="page">
+            <button class="back-button" onclick="showPage('lessons')">
+                ← Terug naar lessen
+            </button>
+            <div id="lessonContent"></div>
+        </section>
+
+        <!-- VOORTGANG -->
+        <section id="progress" class="page">
+            <h2>📊 Mijn voortgang</h2>
+
+            <p id="progressText"></p>
+            <div id="progressBar"></div>
+            <div id="badges"></div>
+        </section>
+
+        <!-- QUIZ -->
+        <section id="quiz" class="page">
+            <h2>🧠 Quiz</h2>
+            <div id="quizArea"></div>
+        </section>
+
+        <!-- OEFENEN -->
+        <section id="practice" class="page">
+            <h2>💻 Oefenen</h2>
+
+            <div id="editorArea"></div>
+        </section>
+
+    </main>
+
+    <!-- STATISTIEKEN -->
+    <div id="xp"></div>
+    <div id="statLessons"></div>
+    <div id="statXP"></div>
+    <div id="statLevel"></div>
+    <div id="statPercent"></div>
+    <div id="homeProgress"></div>
+
+    <script>
+
+        /* =====================================
+           CODELAB
+        ===================================== */
+
+        const lessons = [
+
+            /* ===============================
+               HTML
+            =============================== */
+
+            {
+                id: 1,
+                level: "HTML • Beginner",
+                title: "Wat is HTML?",
+                description: "Leer wat HTML is en hoe een website begint.",
+                points: 10,
+
+                content: `
+            <h1>Les 1: Wat is HTML? 🌐</h1>
+
+            <p>
+                HTML is de taal waarmee je de structuur van een website maakt.
+            </p>
+
+            <h2>Een simpele website</h2>
+
+            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Mijn website&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+    &lt;h1&gt;Hallo wereld!&lt;/h1&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre>
+
+            <h2>Belangrijk</h2>
+
+            <p>
+                HTML gebruikt zogenaamde <b>tags</b>.
+            </p>
+
+            <ul>
+                <li>&lt;h1&gt; = titel</li>
+                <li>&lt;p&gt; = paragraaf</li>
+                <li>&lt;button&gt; = knop</li>
+                <li>&lt;img&gt; = afbeelding</li>
+                <li>&lt;a&gt; = link</li>
+            </ul>
+
+            <h2>🎯 Lesdoel</h2>
+
+            <p>
+                Na deze les weet je wat HTML is en herken je de belangrijkste tags.
+            </p>
+
+            <div class="exercise">
+
+                <h2>🧠 Test</h2>
+
+                <p>
+                    Je moet <b>meer dan de helft</b> van de punten halen.
+                    Deze test heeft 10 punten.
+                </p>
+
+                <div id="lessonQuiz"></div>
+
+            </div>
+        `
+            },
+
+            {
+                id: 2,
+                level: "HTML • Beginner",
+                title: "Titels en paragrafen",
+                description: "Leer h1, h2 en p.",
+                points: 10,
+
+                content: `
+            <h1>Les 2: Titels en paragrafen 📝</h1>
+
+            <p>
+                Met HTML kun je titels en gewone tekst maken.
+            </p>
+
+            <pre><code>&lt;h1&gt;Mijn titel&lt;/h1&gt;
+
+&lt;p&gt;
+Dit is een paragraaf.
+&lt;/p&gt;</code></pre>
+
+            <h2>🎯 Oefening</h2>
+
+            <p>
+                Maak een h1 en een p.
+            </p>
+
+            <textarea id="lessonCode"
+                placeholder="Schrijf je HTML hier..."></textarea>
+
+            <button class="check-button"
+                onclick="checkCodeLesson(2)">
+                Controleer
+            </button>
+
+            <div id="codeResult" class="result"></div>
+        `
+            },
+
+            {
+                id: 3,
+                level: "HTML • Beginner",
+                title: "Links",
+                description: "Leer links maken.",
+                points: 10,
+
+                content: `
+            <h1>Les 3: Links 🔗</h1>
+
+            <p>
+                Met de a-tag maak je een link.
+            </p>
+
+            <pre><code>&lt;a href="https://example.com"&gt;
+Klik hier
+&lt;/a&gt;</code></pre>
+
+            <h2>🎯 Oefening</h2>
+
+            <p>
+                Maak een link met een href.
+            </p>
+
+            <textarea id="lessonCode"
+                placeholder="Schrijf je HTML hier..."></textarea>
+
+            <button class="check-button"
+                onclick="checkCodeLesson(3)">
+                Controleer
+            </button>
+
+            <div id="codeResult" class="result"></div>
+        `
+            },
+
+            {
+                id: 4,
+                level: "HTML • Beginner",
+                title: "Afbeeldingen",
+                description: "Leer afbeeldingen toevoegen.",
+                points: 10,
+
+                content: `
+            <h1>Les 4: Afbeeldingen 🖼️</h1>
+
+            <pre><code>&lt;img src="foto.jpg" alt="Mijn foto"&gt;</code></pre>
+
+            <p>
+                src bepaalt welke afbeelding wordt geladen.
+            </p>
+
+            <textarea id="lessonCode"
+                placeholder="Schrijf je HTML hier..."></textarea>
+
+            <button class="check-button"
+                onclick="checkCodeLesson(4)">
+                Controleer
+            </button>
+
+            <div id="codeResult" class="result"></div>
+        `
+            },
+
+            {
+                id: 5,
+                level: "HTML • Beginner",
+                title: "Lijsten",
+                description: "Maak opsommingen.",
+                points: 10,
+
+                content: `
+            <h1>Les 5: Lijsten 📋</h1>
+
+            <pre><code>&lt;ul&gt;
+    &lt;li&gt;Minecraft&lt;/li&gt;
+    &lt;li&gt;Roblox&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+            <textarea id="lessonCode"
+                placeholder="Schrijf je HTML hier..."></textarea>
+
+            <button class="check-button"
+                onclick="checkCodeLesson(5)">
+                Controleer
+            </button>
+
+            <div id="codeResult" class="result"></div>
+        `
+            }
+
+        ];
+
+
+        /* =====================================
+           EXTRA LESSEN MAKEN
+        ===================================== */
+
+        const extraLessons = [
+
+            ["HTML", "Knoppen", "Leer buttons maken."],
+            ["HTML", "Divs", "Leer onderdelen groeperen."],
+            ["HTML", "Classes", "Leer classes gebruiken."],
+            ["HTML", "IDs", "Leer IDs gebruiken."],
+            ["HTML", "Tabellen", "Maak tabellen."],
+            ["HTML", "Formulieren", "Leer inputvelden maken."],
+            ["HTML", "Header", "Maak de bovenkant van een website."],
+            ["HTML", "Main", "Maak het hoofdgedeelte."],
+            ["HTML", "Footer", "Maak de onderkant."],
+            ["HTML", "Audio", "Voeg geluid toe."],
+            ["HTML", "Video", "Voeg video's toe."],
+            ["HTML", "Semantische HTML", "Schrijf betere HTML."],
+            ["HTML", "Toegankelijkheid", "Maak websites voor iedereen."],
+            ["HTML", "HTML eindproject", "Combineer je HTML-kennis."],
+
+            ["CSS", "Wat is CSS?", "Leer websites stylen."],
+            ["CSS", "Kleuren", "Verander kleuren."],
+            ["CSS", "Fonts", "Verander lettertypes."],
+            ["CSS", "Margin", "Leer ruimte buiten elementen."],
+            ["CSS", "Padding", "Leer ruimte binnen elementen."],
+            ["CSS", "Borders", "Maak randen."],
+            ["CSS", "Border radius", "Maak afgeronde hoeken."],
+            ["CSS", "Flexbox", "Zet elementen naast elkaar."],
+            ["CSS", "Grid", "Maak layouts."],
+            ["CSS", "Hover", "Reageer op de muis."],
+            ["CSS", "Transitions", "Maak animaties vloeiend."],
+            ["CSS", "Responsive design", "Maak websites voor gsm."],
+            ["CSS", "CSS eindproject", "Bouw een mooie website."],
+
+            ["JavaScript", "Wat is JavaScript?", "Maak websites interactief."],
+            ["JavaScript", "Variabelen", "Bewaar informatie."],
+            ["JavaScript", "Strings", "Werk met tekst."],
+            ["JavaScript", "Numbers", "Werk met getallen."],
+            ["JavaScript", "If statements", "Laat code keuzes maken."],
+            ["JavaScript", "Functies", "Maak herbruikbare code."],
+            ["JavaScript", "Buttons", "Reageer op klikken."],
+            ["JavaScript", "DOM", "Verander HTML."],
+            ["JavaScript", "Events", "Reageer op gebeurtenissen."],
+            ["JavaScript", "Arrays", "Bewaar meerdere waarden."],
+            ["JavaScript", "Loops", "Herhaal code."],
+            ["JavaScript", "Objects", "Maak objecten."],
+            ["JavaScript", "Random", "Gebruik willekeurige getallen."],
+            ["JavaScript", "Timers", "Laat code later uitvoeren."],
+            ["JavaScript", "LocalStorage", "Bewaar gegevens."],
+            ["JavaScript", "JavaScript eindproject", "Combineer JavaScript."],
+
+            ["PRO", "Code organiseren", "Leer grote projecten organiseren."],
+            ["PRO", "HTML + CSS + JS", "Combineer de drie talen."],
+            ["PRO", "Debugging", "Leer fouten vinden."],
+            ["PRO", "Developer Tools", "Gebruik browsertools."],
+            ["PRO", "Git", "Leer versiebeheer."],
+            ["PRO", "GitHub", "Zet code online."],
+            ["PRO", "APIs", "Gebruik gegevens van andere systemen."],
+            ["PRO", "JSON", "Leer gegevensstructuren."],
+            ["PRO", "Webapps", "Bouw echte webapps."],
+            ["PRO", "PRO CODER", "Bouw je ultieme eindproject."]
+        ];
+
+
+        extraLessons.forEach(function (item, index) {
+
+            const id = index + 6;
+
+            let level = item[0];
+
+            let levelName = "";
+
+            if (level === "HTML") {
+                levelName = "HTML • Gevorderd";
+            }
+
+            if (level === "CSS") {
+                levelName = "CSS";
+            }
+
+            if (level === "JavaScript") {
+                levelName = "JavaScript";
+            }
+
+            if (level === "PRO") {
+                levelName = "Web Development • PRO";
+            }
+
+            lessons.push({
+
+                id: id,
+
+                level: levelName,
+
+                title: item[1],
+
+                description: item[2],
+
+                points: 10,
+
+                content: `
+            <h1>Les ${id}: ${item[1]}</h1>
+
+            <p>
+                ${item[2]}
+            </p>
+
+            <h2>📚 Uitleg</h2>
+
+            <p>
+                In deze les leer je hoe je ${item[1].toLowerCase()}
+                gebruikt tijdens het programmeren.
+            </p>
+
+            <h2>🎯 Oefening</h2>
+
+            <p>
+                Schrijf zelf code over dit onderwerp.
+            </p>
+
+            <textarea id="lessonCode"
+                placeholder="Schrijf hier je code..."></textarea>
+
+            <button class="check-button"
+                onclick="checkCodeLesson(${id})">
+                Controleer
+            </button>
+
+            <div id="codeResult" class="result"></div>
+        `
+            });
+
+        });
+
+
+        /* =====================================
+           OPSLAG
+        ===================================== */
+
+        let lessonScores =
+            JSON.parse(
+                localStorage.getItem("codelabScores") || "{}"
+            );
+
+        let xp =
+            Number(
+                localStorage.getItem("codelabXP") || 0
+            );
+
+
+        /* =====================================
+           PAGINA'S
+        ===================================== */
+
+        function showPage(page, button) {
+
+            document.querySelectorAll(".page").forEach(function (p) {
+
+                p.classList.remove("active");
+
+            });
+
+
+            const selected =
+                document.getElementById(page);
+
+            if (selected) {
+
+                selected.classList.add("active");
+
+            }
+
+
+            document.querySelectorAll(".nav-button")
+                .forEach(function (b) {
+
+                    b.classList.remove("active");
+
+                });
+
+
+            if (button) {
+
+                button.classList.add("active");
+
+            }
+
+
+            if (page === "lessons") {
+
+                renderLessons();
+
+            }
+
+
+            if (page === "progress") {
+
+                renderProgress();
+
+            }
+
+
+            if (page === "quiz") {
+
+                renderQuiz();
+
+            }
+
+
+            if (page === "practice") {
+
+                openEditor("html");
+
+            }
+
+        }
+
+
+        /* =====================================
+           LESSEN
+        ===================================== */
+
+        function isUnlocked(id) {
+
+            /* LES 1 ALTIJD OPEN */
+
+            if (id === 1) {
+
+                return true;
+
+            }
+
+
+            /* Kijk naar score vorige les */
+
+            const previousScore =
+                Number(
+                    lessonScores[id - 1] || 0
+                );
+
+
+            /* Meer dan de helft */
+
+            return previousScore > 5;
+
+        }
+
+
+        /* =====================================
+           LESSEN TONEN
+        ===================================== */
+
+        function renderLessons() {
+
+            const list =
+                document.getElementById("lessonList");
+
+            list.innerHTML = "";
+
+
+            let currentLevel = "";
+
+            let grid = null;
+
+
+            lessons.forEach(function (lesson) {
+
+                if (lesson.level !== currentLevel) {
+
+                    currentLevel = lesson.level;
+
+
+                    const level =
+                        document.createElement("div");
+
+                    level.className = "level";
+
+
+                    level.innerHTML = `
+
+                <h2 class="level-title">
+                    ${lesson.level}
+                </h2>
+
+                <div class="lessons"></div>
+
+            `;
+
+
+                    list.appendChild(level);
+
+
+                    grid =
+                        level.querySelector(".lessons");
+
+                }
+
+
+                const unlocked =
+                    isUnlocked(lesson.id);
+
+
+                const score =
+                    lessonScores[lesson.id];
+
+
+                const card =
+                    document.createElement("div");
+
+
+                card.className =
+                    "lesson " +
+                    (!unlocked ? "locked" : "");
+
+
+                let status = "";
+
+
+                if (score !== undefined) {
+
+                    status =
+                        `<p style="color:#37d996;margin-top:10px;">
+                    ✅ Score: ${score}/10
+                </p>`;
+
+                }
+
+
+                card.innerHTML = `
+
+            <div class="lesson-number">
+                LES ${lesson.id}
+            </div>
+
+            <h3>
+                ${lesson.title}
+            </h3>
+
+            <p>
+                ${lesson.description}
+            </p>
+
+            ${status}
+
+            ${unlocked
+                        ?
+                        `
+                <button
+                    class="lesson-button"
+                    onclick="openLesson(${lesson.id})">
+
+                    ${score !== undefined
+                            ? "Opnieuw maken"
+                            : "Start les →"}
+
+                </button>
+                `
+                        :
+                        `
+                <p style="margin-top:15px;">
+                    🔒 Vorige les: meer dan 5/10 nodig
+                </p>
+                `
+                    }
+
+        `;
+
+
+                grid.appendChild(card);
+
+            });
+
+        }
+
+
+        /* =====================================
+           LES OPENEN
+        ===================================== */
+
+        function openLesson(id) {
+
+            if (!isUnlocked(id)) {
+
+                alert(
+                    "🔒 Deze les is nog vergrendeld.\n\n" +
+                    "Je moet meer dan de helft halen bij de vorige les."
+                );
+
+                return;
+
+            }
+
+
+            const lesson =
+                lessons.find(function (l) {
+
+                    return l.id === id;
+
+                });
+
+
+            document.querySelectorAll(".page")
+                .forEach(function (p) {
+
+                    p.classList.remove("active");
+
+                });
+
+
+            document.getElementById("lessonPage")
+                .classList.add("active");
+
+
+            document.getElementById("lessonContent")
+                .innerHTML = lesson.content;
+
+
+            /* LES 1 heeft een echte quiz */
+
+            if (id === 1) {
+
+                createLesson1Quiz();
+
+            }
+
+        }
+
+
+        /* =====================================
+           LES 1 QUIZ
+        ===================================== */
+
+        function createLesson1Quiz() {
+
+            const quiz =
+                document.getElementById("lessonQuiz");
+
+
+            const questions = [
+
+                {
+                    question: "Waarvoor gebruik je HTML?",
+                    answers: [
+                        "Voor de structuur van een website",
+                        "Voor alleen kleuren",
+                        "Voor muziek",
+                        "Voor WiFi"
+                    ],
+                    correct: 0
+                },
+
+                {
+                    question: "Welke tag gebruik je voor een grote titel?",
+                    answers: [
+                        "<p>",
+                        "<h1>",
+                        "<img>",
+                        "<button>"
+                    ],
+                    correct: 1
+                },
+
+                {
+                    question: "Welke tag gebruik je voor een paragraaf?",
+                    answers: [
+                        "<p>",
+                        "<h1>",
+                        "<img>",
+                        "<a>"
+                    ],
+                    correct: 0
+                },
+
+                {
+                    question: "Welke tag gebruik je voor een afbeelding?",
+                    answers: [
+                        "<photo>",
+                        "<picture>",
+                        "<img>",
+                        "<image>"
+                    ],
+                    correct: 2
+                },
+
+                {
+                    question: "Welke tag gebruik je voor een link?",
+                    answers: [
+                        "<url>",
+                        "<a>",
+                        "<linkbutton>",
+                        "<go>"
+                    ],
+                    correct: 1
+                },
+
+                {
+                    question: "Waar staat HTML voor?",
+                    answers: [
+                        "HyperText Markup Language",
+                        "High Tech Machine Language",
+                        "Home Tool Mark Language",
+                        "Hyper Tool Making Language"
+                    ],
+                    correct: 0
+                },
+
+                {
+                    question: "Welke tag bevat normaal de zichtbare pagina-inhoud?",
+                    answers: [
+                        "<head>",
+                        "<title>",
+                        "<body>",
+                        "<meta>"
+                    ],
+                    correct: 2
+                },
+
+                {
+                    question: "Welke tag maakt een knop?",
+                    answers: [
+                        "<click>",
+                        "<button>",
+                        "<press>",
+                        "<btn>"
+                    ],
+                    correct: 1
+                },
+
+                {
+                    question: "Welke tag gebruik je voor een titel?",
+                    answers: [
+                        "<h1>",
+                        "<titletext>",
+                        "<heading>",
+                        "<big>"
+                    ],
+                    correct: 0
+                },
+
+                {
+                    question: "Waarvoor is een HTML-tag bedoeld?",
+                    answers: [
+                        "Om de structuur/betekenis van inhoud aan te geven",
+                        "Om je computer sneller te maken",
+                        "Om WiFi te maken",
+                        "Om foto's te tekenen"
+                    ],
+                    correct: 0
+                }
+
+            ];
+
+
+            let html = "";
+
+            questions.forEach(function (q, index) {
+
+                html += `
+
+            <div style="
+                margin-top:20px;
+                padding:15px;
+                background:#11182d;
+                border-radius:10px;
+            ">
+
+                <b>
+                    ${index + 1}. ${q.question}
+                </b>
+
+                <div>
+
+                    ${q.answers.map(function (answer, i) {
+
+                    return `
+
+                            <button
+                                class="quiz-answer"
+                                data-question="${index}"
+                                data-answer="${i}"
+                                style="
+                                    display:block;
+                                    width:100%;
+                                    margin-top:8px;
+                                    padding:10px;
+                                    background:#202945;
+                                    color:white;
+                                    border:1px solid #303a5b;
+                                    border-radius:7px;
+                                    text-align:left;
+                                    cursor:pointer;
+                                ">
+
+                                    ${answer.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+
+                            </button>
+
+                        `;
+
+                }).join("")}
+
+                </div>
+
+            </div>
+
+        `;
+
+            });
+
+
+            html += `
+
+        <button
+            class="primary"
+            style="width:100%;margin-top:25px;"
+            onclick="finishLesson1()">
+
+            Bekijk mijn score
+
+        </button>
+
+        <div
+            id="lesson1Result"
+            class="result"
+            style="margin-top:15px;">
+        </div>
+
+    `;
+
+
+            quiz.innerHTML = html;
+
+
+            document.querySelectorAll(".quiz-answer")
+                .forEach(function (button) {
+
+                    button.addEventListener("click", function () {
+
+                        const question =
+                            this.dataset.question;
+
+                        const buttons =
+                            document.querySelectorAll(
+                                `.quiz-answer[data-question="${question}"]`
+                            );
+
+
+                        buttons.forEach(function (b) {
+
+                            b.style.opacity = "0.5";
+
+                        });
+
+
+                        this.style.opacity = "1";
+
+                        this.dataset.selected = "true";
+
+                    });
+
+                });
+
+
+            window.lesson1Questions = questions;
+
+        }
+
+
+        /* =====================================
+           LES 1 SCORE
+        ===================================== */
+
+        function finishLesson1() {
+
+            const questions =
+                window.lesson1Questions;
+
+
+            let score = 0;
+
+
+            questions.forEach(function (q, index) {
+
+                const selected =
+                    document.querySelector(
+                        `.quiz-answer[data-question="${index}"][data-selected="true"]`
+                    );
+
+
+                if (
+                    selected &&
+                    Number(selected.dataset.answer) === q.correct
+                ) {
+
+                    score++;
+
+                }
+
+            });
+
+
+            lessonScores[1] = score;
+
+
+            localStorage.setItem(
+                "codelabScores",
+                JSON.stringify(lessonScores)
+            );
+
+
+            const result =
+                document.getElementById("lesson1Result");
+
+
+            if (score > 5) {
+
+                result.style.color = "#37d996";
+
+                result.innerHTML =
+                    `
+            🎉 <b>${score}/10!</b><br>
+            Je hebt meer dan de helft gehaald.
+            <br>
+            🔓 Les 2 is nu unlocked!
+            `;
+
+
+                addXP(score);
+
+
+            } else {
+
+                result.style.color = "#ff7777";
+
+                result.innerHTML =
+                    `
+            ❌ <b>${score}/10</b><br>
+            Je hebt meer dan 5 punten nodig.
+            Probeer de les opnieuw.
+            `;
+
+            }
+
+
+            renderLessons();
+
+            updateStats();
+
+        }
+
+
+        /* =====================================
+           CODE OEFENING
+        ===================================== */
+
+        function checkCodeLesson(id) {
+
+            const textarea =
+                document.getElementById("lessonCode");
+
+
+            const result =
+                document.getElementById("codeResult");
+
+
+            if (!textarea) {
+                return;
+            }
+
+
+            const code =
+                textarea.value.toLowerCase();
+
+
+            let correct = false;
+
+
+            if (id === 2) {
+
+                correct =
+                    code.includes("<h1") &&
+                    code.includes("<p");
+
+            }
+
+
+            else if (id === 3) {
+
+                correct =
+                    code.includes("<a") &&
+                    code.includes("href");
+
+            }
+
+
+            else if (id === 4) {
+
+                correct =
+                    code.includes("<img") &&
+                    code.includes("src");
+
+            }
+
+
+            else if (id === 5) {
+
+                correct =
+                    code.includes("<ul") &&
+                    code.includes("<li");
+
+            }
+
+
+            else {
+
+                correct =
+                    code.trim().length > 10;
+
+            }
+
+
+            if (correct) {
+
+                result.style.color = "#37d996";
+
+                result.innerHTML =
+                    "✅ Goed gedaan! Je hebt deze oefening gehaald.";
+
+                const currentScore =
+                    Number(
+                        lessonScores[id] || 0
+                    );
+
+
+                if (currentScore <= 5) {
+
+                    lessonScores[id] = 10;
+
+                    localStorage.setItem(
+                        "codelabScores",
+                        JSON.stringify(lessonScores)
+                    );
+
+                    addXP(10);
+
+                }
+
+
+                renderLessons();
+
+            }
+
+            else {
+
+                result.style.color = "#ff7777";
+
+                result.innerHTML =
+                    "❌ Nog niet goed. Kijk naar de uitleg en probeer opnieuw.";
+
+            }
+
+        }
+
+
+        /* =====================================
+           XP
+        ===================================== */
+
+        function addXP(amount) {
+
+            xp += amount;
+
+
+            localStorage.setItem(
+                "codelabXP",
+                xp
+            );
+
+
+            updateStats();
+
+        }
+
+
+        /* =====================================
+           STATS
+        ===================================== */
+
+        function updateStats() {
+
+            const passed =
+                Object.values(lessonScores)
+                    .filter(function (score) {
+
+                        return Number(score) > 5;
+
+                    }).length;
+
+
+            const percent =
+                Math.round(
+                    passed /
+                    lessons.length *
+                    100
+                );
+
+
+            const level =
+                Math.floor(xp / 100) + 1;
+
+
+            document.getElementById("xp")
+                .innerText = xp;
+
+
+            document.getElementById("statLessons")
+                .innerText = passed;
+
+
+            document.getElementById("statXP")
+                .innerText = xp;
+
+
+            document.getElementById("statLevel")
+                .innerText = level;
+
+
+            document.getElementById("statPercent")
+                .innerText = percent + "%";
+
+
+            document.getElementById("homeProgress")
+                .style.width = percent + "%";
+
+        }
+
+
+        /* =====================================
+           VOORTGANG
+        ===================================== */
+
+        function renderProgress() {
+
+            const passed =
+                Object.values(lessonScores)
+                    .filter(function (score) {
+
+                        return Number(score) > 5;
+
+                    }).length;
+
+
+            const percent =
+                Math.round(
+                    passed /
+                    lessons.length *
+                    100
+                );
+
+
+            document.getElementById("progressText")
+                .innerText =
+                `${passed} / ${lessons.length} lessen`;
+
+
+            document.getElementById("progressBar")
+                .style.width =
+                percent + "%";
+
+
+            const badges = [
+
+                ["🌱", "Eerste les", passed >= 1],
+
+                ["📚", "HTML leerling", passed >= 10],
+
+                ["🏗️", "HTML expert", passed >= 20],
+
+                ["🎨", "CSS coder", passed >= 30],
+
+                ["⚡", "JavaScript coder", passed >= 40],
+
+                ["💻", "Developer", passed >= 50],
+
+                ["🚀", "PRO CODER", passed >= 60]
+
+            ];
+
+
+            document.getElementById("badges")
+                .innerHTML = badges.map(function (b) {
+
+                    return `
+
+                <div class="badge ${b[2] ? "" : "locked"
+                        }">
+
+                    <div class="badge-icon">
+                        ${b[0]}
+                    </div>
+
+                    <b>
+                        ${b[1]}
+                    </b>
+
+                    <p style="
+                        color:#7f89a7;
+                        margin-top:7px;
+                    ">
+
+                        ${b[2]
+                            ? "Vrijgespeeld!"
+                            : "🔒 Vergrendeld"
+                        }
+
+                    </p>
+
+                </div>
+
+            `;
+
+                }).join("");
+
+        }
+
+
+        /* =====================================
+           QUIZ
+        ===================================== */
+
+        function renderQuiz() {
+
+            const area =
+                document.getElementById("quizArea");
+
+
+            area.innerHTML = `
+
+        <div class="exercise">
+
+            <h2>🧠 CodeLab Quiz</h2>
+
+            <p style="margin-top:10px;color:#9aa4c0;">
+                Test jezelf met deze vraag.
+            </p>
+
+            <h3 style="margin-top:20px;">
+                Welke taal gebruik je voor de structuur
+                van een website?
+            </h3>
+
+            <button
+                class="quiz-answer"
+                onclick="quizResult(this, true)">
+                HTML
+            </button>
+
+            <button
+                class="quiz-answer"
+                onclick="quizResult(this, false)">
+                CSS
+            </button>
+
+            <button
+                class="quiz-answer"
+                onclick="quizResult(this, false)">
+                JavaScript
+            </button>
+
+            <div id="quizResult"
+                class="result">
+            </div>
+
+        </div>
+
+    `;
+
+        }
+
+
+        function quizResult(button, correct) {
+
+            const result =
+                document.getElementById("quizResult");
+
+
+            if (correct) {
+
+                result.style.color = "#37d996";
+
+                result.innerText =
+                    "✅ Goed antwoord!";
+
+                addXP(5);
+
+            } else {
+
+                result.style.color = "#ff7777";
+
+                result.innerText =
+                    "❌ Niet juist. Probeer de lessen nog eens.";
+
+            }
+
+        }
+
+
+        /* =====================================
+           EDITOR
+        ===================================== */
+
+        function openEditor(type, button) {
+
+            if (button) {
+
+                document.querySelectorAll(".tab")
+                    .forEach(function (b) {
+
+                        b.classList.remove("active");
+
+                    });
+
+                button.classList.add("active");
+
+            }
+
+
+            const area =
+                document.getElementById("editorArea");
+
+
+            if (type === "css") {
+
+                const passedHTML =
+                    Object.keys(lessonScores)
+                        .filter(function (id) {
+
+                            return Number(id) <= 20 &&
+                                Number(lessonScores[id]) > 5;
+
+                        }).length;
+
+
+                if (passedHTML < 20) {
+
+                    area.innerHTML = `
+
+                <div class="locked-box">
+
+                    <h2>🔒 CSS is nog locked</h2>
+
+                    <p>
+                        Haal meer dan 5/10 bij alle HTML-lessen.
+                    </p>
+
+                </div>
+
+            `;
+
+                    return;
+
+                }
+
+            }
+//test
+            if (type === "js") {
+
+                const passed =
+                    Object.keys(lessonScores)
+                        .filter(function (id) {
+
+                            return Number(lessonScores[id]) > 5;
+
+                        }).length;
+
+
+                if (passed < 34) {
+
+                    area.innerHTML = `
+
+                <div class="locked-box">
+
+                    <h2>🔒 JavaScript is nog locked</h2>
+
+                    <p>
+                        Voltooi eerst de HTML- en CSS-lessen.
+                    </p>
+
+                </div>
+
+            `;
+
+                    return;
+
+                }
+
+            }
+
+
+            let code = "";
+
+
+            if (type === "html") {
+
+                code = `<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Mijn website</title>
+</head>
+
+<body>
+
+    <h1>Hallo wereld!</h1>
+
+    <p>Mijn eerste website.</p>
+
+</body>
+
+</html>`;
+
+            }
+
+
+            if (type === "css") {
+
+                code = `body {
+    background: #111;
+    color: white;
+    font-family: Arial;
+}
+
+h1 {
+    color: cyan;
+}`;
+
+            }
+
+
+            if (type === "js") {
+
+                code = `document.body.innerHTML =
+    "<h1>Hallo vanuit JavaScript!</h1>";`;
+
+            }
+
+
+            area.innerHTML = `
+
+        <div class="editor">
+
+            <div class="editor-box">
+
+                <div class="editor-title">
+                    ${type.toUpperCase()} CODE
+                </div>
+
+                <textarea
+                    id="codeEditor"
+                    oninput="runCode('${type}')"
+                    spellcheck="false">${code}</textarea>
+
+            </div>
+
+
+            <div class="editor-box">
+
+                <div class="editor-title">
+                    PREVIEW
+                </div>
+
+                <iframe
+                    id="preview"
+                    class="preview">
+                </iframe>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+            runCode(type);
+
+        }
+
+
+        /* =====================================
+           CODE UITVOEREN
+        ===================================== */
+
+        function runCode(type) {
+
+            const editor =
+                document.getElementById("codeEditor");
+
+
+            const preview =
+                document.getElementById("preview");
+
+
+            if (!editor || !preview) {
+                return;
+            }
+
+
+            const code =
+                editor.value;
+
+
+            if (type === "html") {
+
+                preview.srcdoc = code;
+
+            }
+
+
+            if (type === "css") {
+
+                preview.srcdoc = `
+
+            <style>
+
+                ${code}
+
+            </style>
+
+            <h1>Mijn website</h1>
+
+            <p>Dit is een test.</p>
+
+            <button>Knop</button>
+
+        `;
+
+            }
+
+
+            if (type === "js") {
+
+                const scriptOpen = "<" + "script>";
+                const scriptClose = "<" + "/script>";
+
+                preview.srcdoc = `
+        <h1 id="titel">JavaScript</h1>
+
+        <button
+            onclick="document.getElementById('titel').innerText='Gelukt!'">
+            Klik mij
+        </button>
+
+        ${scriptOpen}
+            ${code}
+        ${scriptClose}
+    `;
+
+            }
+
+        }
+
+
+        /* =====================================
+           START
+        ===================================== */
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            updateStats();
+            renderLessons();
+            renderQuiz();
+            openEditor("html");
+
+        });
+
+        function toggleExplanation(type) {
+            const shortText = document.getElementById("shortExplanation");
+            const fullText = document.getElementById("fullExplanation");
+
+            if (type === "short") {
+                shortText.style.display = "block";
+                fullText.style.display = "none";
+            } else {
+                shortText.style.display = "none";
+                fullText.style.display = "block";
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
