@@ -643,6 +643,114 @@
             background: white;
             color: #182033;
         }
+
+        /* =========================
+   ADMIN INSTELLINGEN
+========================= */
+
+        #adminSettings {
+            animation: fadeInAdmin 0.3s ease;
+        }
+
+        @keyframes fadeInAdmin {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #adminSettings .card {
+            border: 1px solid rgba(120, 100, 255, 0.25);
+            background: linear-gradient(145deg,
+                    rgba(25, 30, 60, 0.95),
+                    rgba(15, 18, 40, 0.95));
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        #adminSettings h2 {
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        #adminSettings h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        #adminSettings input {
+            width: 100%;
+            padding: 13px 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        #adminSettings input:focus {
+            border-color: #7c5cff;
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
+        }
+
+        #adminSettings button {
+            border: none;
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #7c5cff, #5b4bd8);
+            transition: 0.2s;
+            box-shadow: 0 6px 15px rgba(92, 75, 216, 0.25);
+        }
+
+        #adminSettings button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 9px 20px rgba(92, 75, 216, 0.35);
+        }
+
+        #adminSettings button:active {
+            transform: translateY(0);
+        }
+
+        #adminSettings .settings-card {
+            border-radius: 14px;
+            padding: 16px;
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.045);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #adminSettings .settings-card h3 {
+            margin-bottom: 8px;
+        }
+
+        #adminSettings .settings-card p {
+            margin: 5px 0;
+            opacity: 0.85;
+        }
+
+        #adminNavButton {
+            background: linear-gradient(135deg, #7c5cff, #9b6cff);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        #adminNavButton:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(124, 92, 255, 0.3);
+        }
     </style>
 </head>
 
@@ -672,6 +780,9 @@
         </button>
         <button id="accountNavButton" class="nav-button" onclick="showPage('account', this)">
             👤 Account
+        </button>
+        <button class="nav-button" id="adminNavButton" onclick="showPage('adminSettings', this)" style="display: none;">
+            👑 Admin instellingen
         </button>
         <button class="nav-button" onclick="showPage('settings', this)">
             ⚙️ Instellingen
@@ -781,6 +892,60 @@
 
             </div>
 
+            <div id="adminSection" class="card">
+                <h3>👑 Admin</h3>
+
+                <button id="adminButton" onclick="makeAdmin()">
+                    👑 Admin worden
+                </button>
+
+                <p id="adminStatus"></p>
+            </div>
+
+        </section>
+        <section id="adminSettings" class="page">
+
+            <div class="card">
+                <h2>👑 Admin instellingen</h2>
+                <p>Beheer CodeLab en bekijk je spelers.</p>
+            </div>
+
+            <div class="card">
+                <h3>👥 Spelers</h3>
+
+                <input type="text" id="playerSearch" placeholder="🔎 Zoek een speler..." oninput="searchPlayers()">
+
+                <div id="playersList">
+                    <p>Spelers worden geladen...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>👥 Groepen</h3>
+
+                <input type="text" id="groupName" placeholder="Naam van de groep">
+
+                <button onclick="createGroup()">
+                    ➕ Groep maken
+                </button>
+
+                <div id="groupsList">
+                    <p>Je hebt nog geen groepen.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🚪 Admin</h3>
+
+                <p id="adminStatusText">
+                    👑 Je bent admin.
+                </p>
+
+                <button onclick="stopBeingAdmin()">
+                    🚪 Stoppen met admin
+                </button>
+            </div>
+
         </section>
         <section id="settings" class="page">
             <h2>⚙️ Instellingen</h2>
@@ -852,6 +1017,9 @@
 
                     <button class="danger-button" onclick="resetProgress()">
                         🗑️ Voortgang verwijderen
+                    </button>
+                    <button class="danger-button" onclick="deleteAccount()">
+                        🗑️ Account verwijderen
                     </button>
                 </div>
 
@@ -1228,6 +1396,26 @@ Klik hier
                 localStorage.getItem("codelabXP") || 0
             );
 
+        window.codelabAdmin =
+            localStorage.getItem("codelabAdmin") === "true";
+
+        updateAdminButton();
+
+        function updateAdminButton() {
+
+            const adminButton =
+                document.getElementById("adminNavButton");
+
+            if (!adminButton) return;
+
+            if (window.codelabAdmin === true) {
+                adminButton.style.display = "";
+            } else {
+                adminButton.style.display = "none";
+            }
+        }
+
+        updateAdminSection();
 
         /* =====================================
            PAGINA'S
@@ -1276,6 +1464,18 @@ Klik hier
 
             if (page === "settings") {
                 renderSettings();
+
+                if (window.codelabAdmin === true) {
+                    loadGroups();
+                    loadPlayers();
+                }
+            }
+
+            if (page === "adminSettings") {
+
+                loadPlayers();
+                loadGroups();
+
             }
         }
 
@@ -2939,6 +3139,82 @@ h1 {
             );
         }
 
+        window.makeAdmin = function () {
+
+            if (window.codelabAdmin === true) {
+                alert("Je bent al admin! 👑");
+                return;
+            }
+
+            const code = prompt("Voer de admin-code in:");
+
+            if (code === "ADMINONLY123") {
+
+                window.codelabAdmin = true;
+
+                localStorage.setItem(
+                    "codelabAdmin",
+                    "true"
+                );
+
+                updateAdminButton();
+                updateAdminSection();
+
+                alert("🎉 Admin geactiveerd!");
+
+            }
+        };
+
+        window.stopBeingAdmin = function () {
+            const confirmed = confirm(
+                "Weet je zeker dat je geen admin meer wilt zijn?"
+            );
+
+            if (!confirmed) return;
+
+            window.codelabAdmin = false;
+            localStorage.removeItem("codelabAdmin");
+
+            updateAdminButton();
+            updateAdminSection();
+
+            const adminStatusText =
+                document.getElementById("adminStatusText");
+
+            if (adminStatusText) {
+                adminStatusText.textContent =
+                    "Je bent geen admin meer.";
+            }
+
+            alert("Je bent geen admin meer.");
+
+            showPage("account");
+        };
+
+        function updateAdminSection() {
+            const adminButton = document.getElementById("adminButton");
+            const adminStatus = document.getElementById("adminStatus");
+
+            if (!adminButton || !adminStatus) return;
+
+            if (window.codelabAdmin === true) {
+                adminButton.style.display = "none";
+                adminStatus.textContent = "👑 Je bent admin!";
+            } else {
+                adminButton.style.display = "";
+                adminStatus.textContent = "";
+            }
+        }
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
 
     </script>
 
@@ -2959,9 +3235,107 @@ h1 {
         import {
             getFirestore,
             doc,
-            setDoc
+            setDoc,
+            getDoc,
+            collection,
+            getDocs,
+            deleteDoc
         } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
+        let allPlayers = [];
+
+        window.loadPlayers = async function () {
+
+            if (window.codelabAdmin !== true) {
+                return;
+            }
+
+            const playersList = document.getElementById("playersList");
+
+            if (!playersList) return;
+
+            playersList.innerHTML = "<p>⏳ Spelers laden...</p>";
+
+            try {
+
+                const snapshot = await getDocs(
+                    collection(db, "users")
+                );
+
+                allPlayers = [];
+
+                snapshot.forEach(function (playerDoc) {
+
+                    const player = playerDoc.data();
+
+                    allPlayers.push({
+                        id: playerDoc.id,
+                        username: player.username || "Onbekend",
+                        xp: player.xp || 0,
+                        lessonScores: player.lessonScores || {}
+                    });
+
+                });
+
+                displayPlayers(allPlayers);
+
+            } catch (error) {
+
+                console.error(error);
+
+                playersList.innerHTML =
+                    "<p>❌ Spelers konden niet worden geladen.</p>";
+            }
+        }
+
+        function displayPlayers(players) {
+
+            const playersList =
+                document.getElementById("playersList");
+
+            if (!playersList) return;
+
+            if (players.length === 0) {
+                playersList.innerHTML =
+                    "<p>Geen spelers gevonden.</p>";
+                return;
+            }
+
+            playersList.innerHTML = "";
+
+            players.forEach(function (player) {
+
+                const lessons =
+                    Object.keys(player.lessonScores).length;
+
+                const playerCard =
+                    document.createElement("div");
+
+                playerCard.className = "settings-card";
+
+                playerCard.innerHTML = `
+            <h3>👤 ${player.username}</h3>
+            <p>⭐ XP: ${player.xp}</p>
+            <p>📚 Lessen: ${lessons}</p>
+        `;
+
+                playersList.appendChild(playerCard);
+            });
+        }
+
+        window.searchPlayers = function () {
+            const search = document.getElementById("playerSearch")
+                .value
+                .toLowerCase();
+
+            const filteredPlayers = allPlayers.filter(function (player) {
+                return player.username
+                    .toLowerCase()
+                    .includes(search);
+            });
+
+            displayPlayers(filteredPlayers);
+        };
 
         /* =========================
            FIREBASE
@@ -2985,6 +3359,610 @@ h1 {
 
 
         console.log("🔥 Firebase is verbonden!");
+
+        // =====================================
+        // 🔥 FIREBASE BESCHIKBAAR MAKEN
+        // =====================================
+
+        window.codelabAuth = auth;
+        window.codelabDB = db;
+
+
+        // =====================================
+        // 👥 GROEPEN
+        // =====================================
+
+        let allGroups = [];
+
+        window.createGroup = async function () {
+
+            if (window.codelabAdmin !== true) {
+                alert("❌ Alleen admins kunnen groepen maken.");
+                return;
+            }
+
+            const input = document.getElementById("groupName");
+
+            if (!input) {
+                alert("❌ Groep-veld niet gevonden.");
+                return;
+            }
+
+            const groupName = input.value.trim();
+
+            if (!groupName) {
+                alert("❌ Geef de groep een naam.");
+                return;
+            }
+
+            if (!auth.currentUser) {
+                alert("❌ Je bent niet ingelogd.");
+                return;
+            }
+
+            try {
+
+                const groupId =
+                    groupName
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, "-")
+                    + "-" + Date.now();
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        name: groupName,
+                        createdAt: new Date().toISOString(),
+                        createdBy: auth.currentUser.uid,
+                        players: []
+                    }
+                );
+
+                input.value = "";
+
+                alert("✅ Groep aangemaakt!");
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error("Groep maken:", error);
+
+                alert(
+                    "❌ Groep kon niet worden aangemaakt:\n" +
+                    error.message
+                );
+            }
+        };
+
+
+        window.loadGroups = async function () {
+
+            if (window.codelabAdmin !== true) {
+                return;
+            }
+
+            const groupsList =
+                document.getElementById("groupsList");
+
+            if (!groupsList) {
+                return;
+            }
+
+            groupsList.innerHTML =
+                "<p>⏳ Groepen laden...</p>";
+
+            try {
+
+                const snapshot =
+                    await getDocs(
+                        collection(db, "groups")
+                    );
+
+                allGroups = [];
+
+                snapshot.forEach(function (groupDoc) {
+
+                    const group =
+                        groupDoc.data();
+
+                    allGroups.push({
+                        id: groupDoc.id,
+                        name: group.name || "Naamloos",
+                        players: group.players || []
+                    });
+
+                });
+
+                displayGroups();
+
+            } catch (error) {
+
+                console.error("Groepen laden:", error);
+
+                groupsList.innerHTML =
+                    "<p>❌ Groepen konden niet worden geladen.</p>";
+            }
+        };
+
+
+        function displayGroups() {
+
+            const groupsList = document.getElementById("groupsList");
+
+            if (!groupsList) return;
+
+            if (allGroups.length === 0) {
+                groupsList.innerHTML = "<p>📭 Nog geen groepen.</p>";
+                return;
+            }
+
+            groupsList.innerHTML = "";
+
+            allGroups.forEach(function (group) {
+
+                const card = document.createElement("div");
+
+                card.className = "settings-card";
+
+                card.innerHTML = `
+            <h3>👥 ${escapeHTML(group.name)}</h3>
+
+            <p style="margin-top:10px;">
+                👑 Owner:
+                <strong>
+                    ${escapeHTML(group.ownerName || "Geen owner")}
+                </strong>
+            </p>
+
+            <p style="margin-top:8px;">
+                👤 ${group.players.length} speler(s)
+            </p>
+
+            <div style="margin-top:15px;">
+
+                <button onclick="manageGroupPlayers('${group.id}')">
+                    👥 Spelers beheren
+                </button>
+
+                <button onclick="groupSettings('${group.id}')">
+                    ⚙️ Groepsinstellingen
+                </button>
+
+                <button
+                    class="danger-button"
+                    onclick="deleteGroup('${group.id}')">
+                    🗑️ Groep verwijderen
+                </button>
+
+            </div>
+
+            <div
+                id="groupPanel-${group.id}"
+                style="margin-top:15px;">
+            </div>
+        `;
+
+                groupsList.appendChild(card);
+            });
+        }
+        window.manageGroupPlayers = async function (groupId) {
+
+            const group = allGroups.find(function (g) {
+                return g.id === groupId;
+            });
+
+            if (!group) return;
+
+            const panel = document.getElementById(
+                "groupPanel-" + groupId
+            );
+
+            if (!panel) return;
+
+            if (allPlayers.length === 0) {
+                await loadPlayers();
+            }
+
+            let html = `
+        <div class="settings-card">
+            <h3>👥 Spelers in ${escapeHTML(group.name)}</h3>
+    `;
+
+            if (group.players.length === 0) {
+
+                html += `
+            <p>📭 Deze groep heeft nog geen spelers.</p>
+        `;
+
+            } else {
+
+                group.players.forEach(function (playerId) {
+
+                    const player = allPlayers.find(function (p) {
+                        return p.id === playerId;
+                    });
+
+                    const playerName =
+                        player ? player.username : "Onbekende speler";
+
+                    html += `
+                <div style="
+                    display:flex;
+                    justify-content:space-between;
+                    align-items:center;
+                    padding:12px;
+                    margin-top:8px;
+                    background:#151d33;
+                    border-radius:10px;
+                ">
+
+                    <span>
+                        👤 ${escapeHTML(playerName)}
+                    </span>
+
+                    <button
+                        class="danger-button"
+                        onclick="removePlayerFromGroup(
+                            '${group.id}',
+                            '${playerId}'
+                        )">
+                        ❌ Verwijderen
+                    </button>
+
+                </div>
+            `;
+                });
+            }
+
+            html += `
+        <button
+            style="margin-top:15px;"
+            onclick="addPlayerToGroup('${group.id}')">
+            ➕ Speler toevoegen
+        </button>
+        </div>
+    `;
+
+            panel.innerHTML = html;
+        };
+
+        window.removePlayerFromGroup = async function (
+            groupId,
+            playerId
+        ) {
+
+            const group = allGroups.find(function (g) {
+                return g.id === groupId;
+            });
+
+            if (!group) return;
+
+            const confirmed = confirm(
+                "Weet je zeker dat je deze speler uit de groep wilt verwijderen?"
+            );
+
+            if (!confirmed) return;
+
+            const newPlayers = group.players.filter(function (id) {
+                return id !== playerId;
+            });
+
+            try {
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        players: newPlayers
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+                alert("✅ Speler verwijderd!");
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Speler verwijderen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+        window.groupSettings = async function (groupId) {
+
+            const group = allGroups.find(function (g) {
+                return g.id === groupId;
+            });
+
+            if (!group) return;
+
+            const panel = document.getElementById(
+                "groupPanel-" + groupId
+            );
+
+            if (!panel) return;
+
+            panel.innerHTML = `
+        <div class="settings-card">
+
+            <h3>⚙️ Groepsinstellingen</h3>
+
+            <p style="margin-top:10px;">
+                👑 Huidige owner:
+                <strong>
+                    ${escapeHTML(
+                group.ownerName || "Geen owner"
+            )}
+                </strong>
+            </p>
+
+            <button
+                style="margin-top:15px;"
+                onclick="addGroupOwner('${group.id}')">
+                👑 Owner toevoegen
+            </button>
+
+            <button
+                style="margin-top:8px;"
+                onclick="removeGroupOwner('${group.id}')">
+                ❌ Owner verwijderen
+            </button>
+
+        </div>
+    `;
+        };
+        window.addGroupOwner = async function (groupId) {
+
+            if (allPlayers.length === 0) {
+                await loadPlayers();
+            }
+
+            const username = prompt(
+                "Typ de gebruikersnaam van de nieuwe owner:"
+            );
+
+            if (!username) return;
+
+            const player = allPlayers.find(function (p) {
+
+                return p.username.toLowerCase() ===
+                    username.trim().toLowerCase();
+
+            });
+
+            if (!player) {
+
+                alert(
+                    "❌ Speler niet gevonden.\n\n" +
+                    "Controleer de gebruikersnaam."
+                );
+
+                return;
+            }
+
+            try {
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        ownerId: player.id,
+                        ownerName: player.username
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+                alert(
+                    "👑 " +
+                    player.username +
+                    " is nu owner!"
+                );
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Owner instellen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+        window.removeGroupOwner = async function (groupId) {
+
+            const confirmed = confirm(
+                "Weet je zeker dat je de owner wilt verwijderen?"
+            );
+
+            if (!confirmed) return;
+
+            try {
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        ownerId: "",
+                        ownerName: ""
+                    },
+                    {
+                        merge: true
+                    }
+                );
+
+                alert("✅ Owner verwijderd!");
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Owner verwijderen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+
+        window.setGroupOwner = async function (groupId) {
+
+            const username = prompt(
+                "Typ de gebruikersnaam van de nieuwe owner:"
+            );
+
+            if (!username) return;
+
+            const player = allPlayers.find(function (p) {
+                return p.username.toLowerCase() ===
+                    username.toLowerCase();
+            });
+
+            if (!player) {
+                alert("❌ Speler niet gevonden.");
+                return;
+            }
+
+            try {
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        ownerId: player.id,
+                        ownerName: player.username
+                    },
+                    { merge: true }
+                );
+
+                alert("👑 Owner ingesteld!");
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Owner instellen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+
+        window.addPlayerToGroup = async function (groupId) {
+
+            if (allPlayers.length === 0) {
+                await loadPlayers();
+            }
+
+            const username = prompt(
+                "Typ de gebruikersnaam van de speler:"
+            );
+
+            if (!username) return;
+
+            const player = allPlayers.find(function (p) {
+                return p.username.toLowerCase() ===
+                    username.toLowerCase();
+            });
+
+            if (!player) {
+                alert("❌ Speler niet gevonden.");
+                return;
+            }
+
+            const group = allGroups.find(function (g) {
+                return g.id === groupId;
+            });
+
+            if (!group) return;
+
+            if (group.players.includes(player.id)) {
+                alert("Deze speler zit al in de groep.");
+                return;
+            }
+
+            group.players.push(player.id);
+
+            try {
+
+                await setDoc(
+                    doc(db, "groups", groupId),
+                    {
+                        players: group.players
+                    },
+                    { merge: true }
+                );
+
+                alert("✅ Speler toegevoegd!");
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "❌ Speler toevoegen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+
+        window.deleteGroup = async function (groupId) {
+
+            if (window.codelabAdmin !== true) {
+                alert("❌ Alleen admins kunnen groepen verwijderen.");
+                return;
+            }
+
+            const confirmed =
+                confirm(
+                    "Weet je zeker dat je deze groep wilt verwijderen?"
+                );
+
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+
+                await deleteDoc(
+                    doc(db, "groups", groupId)
+                );
+
+                alert("🗑️ Groep verwijderd!");
+
+                await loadGroups();
+
+            } catch (error) {
+
+                console.error("Groep verwijderen:", error);
+
+                alert(
+                    "❌ Groep verwijderen mislukt:\n" +
+                    error.message
+                );
+            }
+        };
+
+
+        function escapeHTML(text) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
 
 
         /* =========================
@@ -3157,17 +4135,96 @@ h1 {
             }
         };
 
+        window.deleteAccount = async function () {
+
+            const user = auth.currentUser;
+
+            if (!user) {
+                alert("❌ Je bent niet ingelogd.");
+                return;
+            }
+
+            const confirmed = confirm(
+                "⚠️ Weet je zeker dat je je volledige account wilt verwijderen?\n\n" +
+                "Je account, voortgang en gegevens worden verwijderd."
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+
+                // Firebase Authentication-account verwijderen
+                await user.delete();
+
+                // Lokale gegevens verwijderen
+                localStorage.removeItem("codelabScores");
+                localStorage.removeItem("codelabXP");
+                localStorage.removeItem("codelabUsername");
+                localStorage.removeItem("codelabAdmin");
+                localStorage.removeItem("codelabTheme");
+                localStorage.removeItem("codelabNotifications");
+
+                window.codelabUser = null;
+                window.codelabAdmin = false;
+
+                alert("✅ Je account is verwijderd.");
+
+                showPage("account");
+
+            } catch (error) {
+
+                console.error("Account verwijderen:", error);
+
+                if (error.code === "auth/requires-recent-login") {
+
+                    alert(
+                        "🔐 Om veiligheidsredenen moet je opnieuw inloggen " +
+                        "voordat je je account kunt verwijderen."
+                    );
+
+                } else {
+
+                    alert(
+                        "❌ Account verwijderen mislukt:\n" +
+                        error.message
+                    );
+                }
+            }
+        };
 
         /* =========================
            KIJKEN OF IEMAND INGELOGD IS
         ========================= */
 
-        onAuthStateChanged(auth, function (user) {
+        onAuthStateChanged(auth, async function (user) {
 
             if (user) {
 
                 // Gebruiker is ingelogd
                 window.codelabUser = user;
+
+                const token = await user.getIdTokenResult();
+
+                if (
+                    token.claims.admin === true ||
+                    localStorage.getItem("codelabAdmin") === "true"
+                ) {
+
+                    console.log("👑 ADMIN INGLOGD");
+
+                    window.codelabAdmin = true;
+
+                } else {
+
+                    console.log("👤 Gewone gebruiker");
+
+                    window.codelabAdmin = false;
+                }
+
+                updateAdminButton();
+                updateAdminSection();
 
                 console.log(
                     "👤 Ingelogd als:",
@@ -3193,27 +4250,27 @@ h1 {
 
             } else {
 
-    // Niemand is ingelogd
-    window.codelabUser = null;
+                // Niemand is ingelogd
+                window.codelabUser = null;
 
-    console.log("🔒 Geen gebruiker ingelogd.");
+                console.log("🔒 Geen gebruiker ingelogd.");
 
-    // Alle navigatie verbergen
-    document.querySelectorAll(".nav-button").forEach(function (button) {
-        button.style.display = "none";
-    });
+                // Alle navigatie verbergen
+                document.querySelectorAll(".nav-button").forEach(function (button) {
+                    button.style.display = "none";
+                });
 
-    // Account-knop weer zichtbaar maken
-    const accountButton =
-        document.getElementById("accountNavButton");
+                // Account-knop weer zichtbaar maken
+                const accountButton =
+                    document.getElementById("accountNavButton");
 
-    if (accountButton) {
-        accountButton.style.display = "";
-    }
+                if (accountButton) {
+                    accountButton.style.display = "";
+                }
 
-    // Accountpagina openen
-    showPage("account");
-}
+                // Accountpagina openen
+                showPage("account");
+            }
 
         });
 
