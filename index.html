@@ -911,27 +911,59 @@
             </div>
 
             <div class="card">
-                <h3>👥 Spelers</h3>
 
-                <input type="text" id="playerSearch" placeholder="🔎 Zoek een speler..." oninput="searchPlayers()">
+                <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    ">
+                    <h3>👥 Spelers</h3>
 
-                <div id="playersList">
-                    <p>Spelers worden geladen...</p>
+                    <button id="playersToggle" onclick="togglePlayers()">
+                        ▶ Tonen
+                    </button>
                 </div>
+
+                <div id="playersContent" style="display:none; margin-top:15px;">
+
+                    <input type="text" id="playerSearch" placeholder="🔎 Zoek een speler..." oninput="searchPlayers()">
+
+                    <div id="playersList">
+                        <p>Spelers worden geladen...</p>
+                    </div>
+
+                </div>
+
             </div>
 
             <div class="card">
-                <h3>👥 Groepen</h3>
 
-                <input type="text" id="groupName" placeholder="Naam van de groep">
+                <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+    ">
+                    <h3>👥 Groepen</h3>
 
-                <button onclick="createGroup()">
-                    ➕ Groep maken
-                </button>
-
-                <div id="groupsList">
-                    <p>Je hebt nog geen groepen.</p>
+                    <button id="groupsToggle" onclick="toggleGroups()">
+                        ▶ Tonen
+                    </button>
                 </div>
+
+                <div id="groupsContent" style="display:none; margin-top:15px;">
+
+                    <input type="text" id="groupName" placeholder="Naam van de groep">
+
+                    <button onclick="createGroup()">
+                        ➕ Groep maken
+                    </button>
+
+                    <div id="groupsList">
+                        <p>Je hebt nog geen groepen.</p>
+                    </div>
+
+                </div>
+
             </div>
 
             <div class="card">
@@ -971,15 +1003,6 @@
                         </div>
                         <span class="settings-status">Actief</span>
                     </div>
-
-                    <div class="settings-row">
-                        <div>
-                            <strong>Wachtwoord</strong>
-                            <p>Beschikbaar zodra Firebase is gekoppeld</p>
-                        </div>
-                        <button disabled>🔒 Later</button>
-                    </div>
-                </div>
 
                 <!-- VOORTGANG -->
                 <div class="settings-card">
@@ -1041,6 +1064,51 @@
         /* =====================================
            CODELAB
         ===================================== */
+
+        function togglePlayers() {
+
+            const content =
+                document.getElementById("playersContent");
+
+            const button =
+                document.getElementById("playersToggle");
+
+            if (content.style.display === "none") {
+
+                content.style.display = "block";
+                button.textContent = "▼ Verstoppen";
+
+                loadPlayers();
+
+            } else {
+
+                content.style.display = "none";
+                button.textContent = "▶ Tonen";
+            }
+        }
+
+
+        function toggleGroups() {
+
+            const content =
+                document.getElementById("groupsContent");
+
+            const button =
+                document.getElementById("groupsToggle");
+
+            if (content.style.display === "none") {
+
+                content.style.display = "block";
+                button.textContent = "▼ Verstoppen";
+
+                loadGroups();
+
+            } else {
+
+                content.style.display = "none";
+                button.textContent = "▶ Tonen";
+            }
+        }
 
         const lessons = [
 
