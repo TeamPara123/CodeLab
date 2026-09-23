@@ -13,7 +13,7 @@ Vroeger stond alles in één `index.html` van 4348 regels. Nu staat elk onderdee
 
 ```
 index.html              De HTML: de pagina's, knoppen en invulvelden.
-                        Onderaan laadt hij alle CSS- en JS-bestanden.
+                        In <head> laadt hij de CSS, onderaan de JS-bestanden.
 css/
   base.css              Basisopmaak: kleuren, header, navigatie, main.
   lessons.css           De lessenlijst, de lespagina, codeblokken, tekstvakken.
