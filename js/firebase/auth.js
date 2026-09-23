@@ -245,8 +245,6 @@ onAuthStateChanged(auth, async function (user) {
         // Gebruiker is ingelogd
         window.codelabUser = user;
 
-        const token = await user.getIdTokenResult();
-
         // Rol uit Firestore lezen. Geen document of geen veld = gewone gebruiker.
         let role = "user";
 
