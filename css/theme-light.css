@@ -1,0 +1,29 @@
+/* =========================
+   LICHT THEMA
+========================= */
+
+body.light-mode {
+    background: #f4f6fb;
+    color: #182033;
+}
+
+body.light-mode .settings-card {
+    background: white;
+    border-color: #dfe3ec;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .settings-row {
+    border-bottom-color: #e5e7eb;
+}
+
+body.light-mode .settings-row p {
+    color: #555;
+}
+
+body.light-mode .card,
+body.light-mode .lesson-card,
+body.light-mode .quiz-card {
+    background: white;
+    color: #182033;
+}

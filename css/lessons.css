@@ -1,0 +1,144 @@
+/* ========================================
+   LESSEN
+======================================== */
+
+.level {
+    margin-bottom: 35px;
+}
+
+.level-title {
+    color: #8fa7ff;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.lessons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 18px;
+}
+
+.lesson {
+    background: #151d34;
+    border: 1px solid #293554;
+    border-radius: 15px;
+    padding: 20px;
+    transition: 0.2s;
+}
+
+.lesson:hover {
+    transform: translateY(-4px);
+    border-color: #506be0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.lesson-number {
+    color: #728cff;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.lesson h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.lesson p {
+    color: #9da8c3;
+    line-height: 1.5;
+}
+
+.lesson.locked {
+    opacity: 0.55;
+}
+
+.lesson-button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 9px;
+    background: #4969e8;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.lesson-button:hover {
+    background: #5b78f2;
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   LES PAGINA
+======================================== */
+
+#lessonPage {
+    background: #11182d;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #293554;
+}
+
+#lessonContent h1 {
+    margin-bottom: 20px;
+}
+
+#lessonContent h2 {
+    margin-top: 25px;
+    color: #91a5ff;
+}
+
+#lessonContent p,
+#lessonContent li {
+    color: #b2bad0;
+    line-height: 1.7;
+}
+
+#lessonContent ul {
+    margin: 15px 0 15px 25px;
+}
+
+/* ========================================
+   CODE
+======================================== */
+
+pre {
+    background: #080d19;
+    border: 1px solid #283250;
+    padding: 18px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 15px 0;
+}
+
+code {
+    color: #dbe2ff;
+    font-family: Consolas, monospace;
+}
+
+/* ========================================
+   TEXTAREA
+======================================== */
+
+textarea {
+    width: 100%;
+    min-height: 180px;
+    margin-top: 15px;
+    padding: 15px;
+    background: #080d19;
+    color: #ffffff;
+    border: 1px solid #303b60;
+    border-radius: 10px;
+    resize: vertical;
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+textarea:focus {
+    border-color: #5975ed;
+    box-shadow: 0 0 0 2px rgba(89, 117, 237, 0.15);
+}

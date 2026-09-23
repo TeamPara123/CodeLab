@@ -1,0 +1,182 @@
+/* ========================================
+   KNOPPEN
+======================================== */
+
+button {
+    font-family: inherit;
+}
+
+.check-button,
+.primary {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: #4969e8;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.check-button:hover,
+.primary:hover {
+    background: #5b78f2;
+    transform: translateY(-2px);
+}
+
+.result {
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+/* ========================================
+   QUIZ
+======================================== */
+
+.exercise {
+    margin-top: 25px;
+    background: #151d34;
+    border: 1px solid #293554;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.quiz-answer {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    background: #202945;
+    color: white;
+    border: 1px solid #303a5b;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.quiz-answer:hover {
+    background: #2c395d !important;
+    border-color: #5975ed !important;
+}
+
+/* ========================================
+   VOORTGANG
+======================================== */
+
+#progressText {
+    color: #aab4d0;
+    margin-bottom: 12px;
+}
+
+#progressBar {
+    width: 0%;
+    height: 14px;
+    background: #4969e8;
+    border-radius: 20px;
+    transition: width 0.5s;
+}
+
+#progress {
+    background: #11182d;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #293554;
+}
+
+#badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.badge {
+    background: #151d34;
+    border: 1px solid #293554;
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+}
+
+.badge.locked {
+    opacity: 0.45;
+}
+
+.badge-icon {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   EDITOR
+======================================== */
+
+.editor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.editor-box {
+    background: #11182d;
+    border: 1px solid #293554;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.editor-title {
+    background: #1b2540;
+    padding: 12px 15px;
+    font-weight: bold;
+    color: #aab8ff;
+}
+
+.editor-box textarea {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    min-height: 400px;
+}
+
+.preview {
+    width: 100%;
+    height: 430px;
+    background: white;
+    border: none;
+}
+
+/* ========================================
+   LOCKED BOX
+======================================== */
+
+.locked-box {
+    background: #171d31;
+    border: 1px solid #4b5270;
+    border-radius: 14px;
+    padding: 30px;
+    text-align: center;
+}
+
+.locked-box h2 {
+    margin-bottom: 10px;
+}
+
+.locked-box p {
+    color: #9da8c3;
+}
+
+/* ========================================
+   STATISTIEKEN
+======================================== */
+
+#xp,
+#statLessons,
+#statXP,
+#statLevel,
+#statPercent,
+#homeProgress {
+    display: none;
+}
