@@ -1,19 +1,20 @@
 // Admin: alle spelers laden, tonen en zoeken.
 
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
-import { db } from "./firebase.js";
+import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { auth, db } from "./firebase.js";
 
 export let allPlayers = [];
 
 window.loadPlayers = async function () {
 
-    if (window.codelabAdmin !== true) {
-        return;
-    }
-
     const playersList = document.getElementById("playersList");
 
     if (!playersList) return;
+
+    if (window.codelabAdmin !== true) {
+        playersList.innerHTML = "<p>🔒 Alleen admins kunnen dit zien.</p>";
+        return;
+    }
 
     playersList.innerHTML = "<p>⏳ Spelers laden...</p>";
 
@@ -32,6 +33,7 @@ window.loadPlayers = async function () {
             allPlayers.push({
                 id: playerDoc.id,
                 username: player.username || "Onbekend",
+                role: player.role || "user",
                 xp: player.xp || 0,
                 lessonScores: player.lessonScores || {}
             });
@@ -74,10 +76,21 @@ function displayPlayers(players) {
 
         playerCard.className = "settings-card";
 
+        const isMe = player.id === auth.currentUser?.uid;
+        let roleButton = "";
+
+        if (window.codelabRole === "superadmin" && !isMe && player.role !== "superadmin") {
+            const newRole = player.role === "admin" ? "user" : "admin";
+            const label = newRole === "admin" ? "👑 Maak admin" : "👤 Maak gewone gebruiker";
+            roleButton = `<button onclick="setRole('${player.id}', '${newRole}')">${label}</button>`;
+        }
+
         playerCard.innerHTML = `
     <h3>👤 ${player.username}</h3>
+    <p>🎭 Rol: ${player.role}</p>
     <p>⭐ XP: ${player.xp}</p>
     <p>📚 Lessen: ${lessons}</p>
+    ${roleButton}
 `;
 
         playersList.appendChild(playerCard);
@@ -96,4 +109,16 @@ window.searchPlayers = function () {
     });
 
     displayPlayers(filteredPlayers);
+};
+
+window.setRole = async function (uid, newRole) {
+    if (!confirm(`Rol veranderen naar "${newRole}"?`)) return;
+
+    try {
+        await updateDoc(doc(db, "users", uid), { role: newRole });
+        await loadPlayers();
+    } catch (error) {
+        console.error(error);
+        alert("❌ Dat mag niet (of er ging iets mis).");
+    }
 };

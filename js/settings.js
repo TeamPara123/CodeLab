@@ -245,69 +245,14 @@ function resetProgress() {
     );
 }
 
-window.makeAdmin = function () {
-
-    if (window.codelabAdmin === true) {
-        alert("Je bent al admin! 👑");
-        return;
-    }
-
-    const code = prompt("Voer de admin-code in:");
-
-    if (code === "ADMINONLY123") {
-
-        window.codelabAdmin = true;
-
-        localStorage.setItem(
-            "codelabAdmin",
-            "true"
-        );
-
-        updateAdminButton();
-        updateAdminSection();
-
-        alert("🎉 Admin geactiveerd!");
-
-    }
-};
-
-window.stopBeingAdmin = function () {
-    const confirmed = confirm(
-        "Weet je zeker dat je geen admin meer wilt zijn?"
-    );
-
-    if (!confirmed) return;
-
-    window.codelabAdmin = false;
-    localStorage.removeItem("codelabAdmin");
-
-    updateAdminButton();
-    updateAdminSection();
-
-    const adminStatusText =
-        document.getElementById("adminStatusText");
-
-    if (adminStatusText) {
-        adminStatusText.textContent =
-            "Je bent geen admin meer.";
-    }
-
-    alert("Je bent geen admin meer.");
-
-    showPage("account");
-};
-
 function updateAdminSection() {
-    const adminButton = document.getElementById("adminButton");
     const adminStatus = document.getElementById("adminStatus");
+    if (!adminStatus) return;
 
-    if (!adminButton || !adminStatus) return;
-
-    if (window.codelabAdmin === true) {
-        adminButton.style.display = "none";
-        adminStatus.textContent = "👑 Je bent admin!";
-    } else {
-        adminButton.style.display = "";
-        adminStatus.textContent = "";
-    }
+    const labels = {
+        superadmin: "🌟 Je bent superadmin",
+        admin: "👑 Je bent admin",
+        user: "👤 Gewone gebruiker"
+    };
+    adminStatus.textContent = labels[window.codelabRole] || "";
 }

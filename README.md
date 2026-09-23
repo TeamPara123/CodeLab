@@ -55,11 +55,11 @@ js/
 
 Bij het opsplitsen is **niets** aan de werking veranderd. Dit zijn goede volgende stappen:
 
-1. **Beveiliging van admin.** Iedereen kan zichzelf admin maken: typ in de console `localStorage.setItem("codelabAdmin", "true")`, of lees de admin-code in `js/settings.js`. Alles wat in de browser staat, kan de gebruiker zien en aanpassen. Echte bescherming hoort in de **Firestore Security Rules** (in de Firebase-console) en in custom claims (`token.claims.admin`, zie `auth.js`). Dat de `firebaseConfig` in de code staat is normaal; die mag publiek zijn.
-2. **Dubbele code opruimen.** `escapeHTML` staat twee keer (`utils.js` en `firebase/groups.js`). `togglePlayers` en `toggleGroups` in `admin-ui.js` zijn bijna hetzelfde: maak er één functie van.
-3. **Unieke id's.** Meerdere lessen gebruiken `id="codeResult"`. Een id moet op de pagina uniek zijn.
-4. **Eén plek voor voortgang.** Scores en XP staan in `localStorage` én in Firestore. Kies één "bron van waarheid".
-5. **Extra lessen.** De lessen die automatisch uit `extraLessons` gemaakt worden, hebben allemaal dezelfde algemene tekst. Schrijf ze echt uit.
-6. **Van `onclick` naar `addEventListener`.** Als de HTML geen `onclick` meer gebruikt, kunnen alle JS-bestanden modules worden en zijn de `window.X = ...` regels niet meer nodig.
+[x] **Beveiliging van admin.** Iedereen kan zichzelf admin maken: typ in de console `localStorage.setItem("codelabAdmin", "true")`, of lees de admin-code in `js/settings.js`. Alles wat in de browser staat, kan de gebruiker zien en aanpassen. Echte bescherming hoort in de **Firestore Security Rules** (in de Firebase-console) en in custom claims (`token.claims.admin`, zie `auth.js`). Dat de `firebaseConfig` in de code staat is normaal; die mag publiek zijn.
+[ ] **Dubbele code opruimen.** `escapeHTML` staat twee keer (`utils.js` en `firebase/groups.js`). `togglePlayers` en `toggleGroups` in `admin-ui.js` zijn bijna hetzelfde: maak er één functie van.
+[ ] **Unieke id's.** Meerdere lessen gebruiken `id="codeResult"`. Een id moet op de pagina uniek zijn.
+[ ] **Eén plek voor voortgang.** Scores en XP staan in `localStorage` én in Firestore. Kies één "bron van waarheid".
+[ ] **Extra lessen.** De lessen die automatisch uit `extraLessons` gemaakt worden, hebben allemaal dezelfde algemene tekst. Schrijf ze echt uit.
+[ ] **Van `onclick` naar `addEventListener`.** Als de HTML geen `onclick` meer gebruikt, kunnen alle JS-bestanden modules worden en zijn de `window.X = ...` regels niet meer nodig.
 
 Tip: maak voor elke stap een aparte commit, dan kun je altijd terug.
