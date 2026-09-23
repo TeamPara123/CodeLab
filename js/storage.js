@@ -14,5 +14,4 @@ let xp =
         localStorage.getItem("codelabXP") || 0
     );
 
-window.codelabAdmin =
-    localStorage.getItem("codelabAdmin") === "true";
+    window.codelabAdmin = false;

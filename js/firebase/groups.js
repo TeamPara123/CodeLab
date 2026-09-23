@@ -73,15 +73,15 @@ window.createGroup = async function () {
 
 
 window.loadGroups = async function () {
-
-    if (window.codelabAdmin !== true) {
-        return;
-    }
-
     const groupsList =
         document.getElementById("groupsList");
 
     if (!groupsList) {
+        return;
+    }
+
+    if (window.codelabAdmin !== true) {
+        groupsList.innerHTML = "<p>🔒 Alleen admins kunnen dit zien.</p>";
         return;
     }
 

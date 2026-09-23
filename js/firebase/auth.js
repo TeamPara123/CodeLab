@@ -1,8 +1,9 @@
 // Account: registreren, inloggen, uitloggen, verwijderen en bijhouden wie ingelogd is.
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 import { auth, db } from "./firebase.js";
+
 
 /* =========================
    ACCOUNT AANMAKEN
@@ -58,6 +59,7 @@ window.registerAccount = async function () {
             {
                 username: username,
                 email: email,
+                role: "user",
                 xp: 0,
                 lessonScores: {},
                 createdAt: new Date().toISOString()
@@ -201,7 +203,6 @@ window.deleteAccount = async function () {
         localStorage.removeItem("codelabScores");
         localStorage.removeItem("codelabXP");
         localStorage.removeItem("codelabUsername");
-        localStorage.removeItem("codelabAdmin");
         localStorage.removeItem("codelabTheme");
         localStorage.removeItem("codelabNotifications");
 
@@ -246,24 +247,22 @@ onAuthStateChanged(auth, async function (user) {
 
         const token = await user.getIdTokenResult();
 
-        if (
-            token.claims.admin === true ||
-            localStorage.getItem("codelabAdmin") === "true"
-        ) {
+        // Rol uit Firestore lezen. Geen document of geen veld = gewone gebruiker.
+        let role = "user";
 
-            console.log("👑 ADMIN INGLOGD");
-
-            window.codelabAdmin = true;
-
-        } else {
-
-            console.log("👤 Gewone gebruiker");
-
-            window.codelabAdmin = false;
+        try {
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists() && userDoc.data().role) {
+                role = userDoc.data().role;
+            }
+        } catch (error) {
+            console.error("Rol ophalen mislukt:", error);
         }
 
-        updateAdminButton();
-        updateAdminSection();
+        window.codelabRole = role;
+        window.codelabAdmin = role === "admin" || role === "superadmin";
+
+        console.log("🎭 Rol:", role);
 
         console.log(
             "👤 Ingelogd als:",
@@ -284,6 +283,9 @@ onAuthStateChanged(auth, async function (user) {
             button.style.display = "";
         });
 
+        updateAdminButton();
+        updateAdminSection();
+
         // Naar lessen
         showPage("lessons");
 
@@ -291,6 +293,8 @@ onAuthStateChanged(auth, async function (user) {
 
         // Niemand is ingelogd
         window.codelabUser = null;
+        window.codelabRole = null;
+        window.codelabAdmin = false;
 
         console.log("🔒 Geen gebruiker ingelogd.");
 
