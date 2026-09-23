@@ -1,0 +1,94 @@
+/* ========================================
+   CODELAB CSS
+======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0b1020;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+header {
+    background: linear-gradient(135deg, #151d38, #202d55);
+    padding: 35px 20px;
+    text-align: center;
+    border-bottom: 1px solid #303b60;
+}
+
+header h1 {
+    font-size: 42px;
+    margin-bottom: 8px;
+}
+
+header p {
+    color: #aab4d0;
+    font-size: 17px;
+}
+
+/* ========================================
+   NAVIGATIE
+======================================== */
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: #10172b;
+    border-bottom: 1px solid #252e4c;
+    flex-wrap: wrap;
+}
+
+.nav-button {
+    background: #1b2540;
+    color: white;
+    border: 1px solid #303b60;
+    padding: 11px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.nav-button:hover {
+    background: #29365a;
+    transform: translateY(-2px);
+}
+
+.nav-button.active {
+    background: #4969e8;
+    border-color: #6681ff;
+}
+
+/* ========================================
+   MAIN
+======================================== */
+
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.page h2 {
+    margin-bottom: 20px;
+}
